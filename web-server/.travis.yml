@@ -1,0 +1,2 @@
+script:
+- docker build -t temperatureserver/web-server:0.1 .
