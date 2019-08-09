@@ -1,0 +1,133 @@
+<html>
+	<head>
+		<title>Progetto Montagna</title>
+		<!--<link href="index.css" type="text/css" rel="stylesheet" />-->
+	    <script>
+		    var test=false;
+		    var ip="192.168.1.23";
+		    if(!test) ip="127.0.0.1";
+		    
+		    function httpGet(theUrl)
+			{
+				var xmlHttp = new XMLHttpRequest();
+console.log(theUrl);
+				xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+			    	xmlHttp.send( null );
+			    return xmlHttp.responseText;
+			}
+			function setTemperature(url,divid)
+			{
+				var temperature = "error"
+				try{
+		        	var response = httpGet(url);
+		        	response = JSON.parse(response);
+		        	temperature=response.temperature;
+		        	console.log(temperature)
+		        	if(temperature===undefined)
+		        		temperature="-"
+		        	else
+			        	temperature = temperature+"&deg;C";
+		        	document.getElementById(divid).className = "temperatureDisplayActive";
+		        }
+		        catch (err) {
+		        	console.log("ciao");
+		        }
+		        document.getElementById(divid).innerHTML = temperature;
+			}
+		    setInterval(setTemperature,5000,"http://"+ip+":1880/temperature/cameretta","tempMarco");
+		    setInterval(setTemperature,5000,"http://"+ip+":1880/temperature/cameradaletto","tempMaria");
+		    setInterval(setTemperature,5000,"http://"+ip+":1880/temperature/esterna","tempEsterna");
+	    </script>
+	    <style>
+		    @font-face {
+		        font-family: 'digital-clock-font';
+		        src: url('font/digital-7.ttf');
+		    }
+		    * {
+		      margin: 0;
+		      padding: 0;
+		      box-sizing: border-box;
+		      background-color: black;
+		    }
+		    
+		    .frame
+		    {
+		    	font-family: 'digital-clock-font';
+		    	width: 100%;
+		    	height: 50%;
+		    	font-size: 200px;
+		    	text-align: center;
+		    	padding-top: 1%;
+		    	color: #f73030;
+		    }
+		    .left
+		    {
+		    	float: left;
+		    	height: 100%;
+		    	width: 50%;
+		    }
+		    .right
+		    {
+		    	float: right;
+		    	height: 100%;
+		    	width: 50%;
+		    }
+		    .title
+		    {
+		    	font-family: 'digital-clock-font';
+		    	font-size: 40px;
+		    	width: 100%;
+		    	height: 20%;
+		    	text-align: center;
+		    }
+		    .temperatureDisplayInactive
+		    {
+		    	font-family: 'digital-clock-font';
+		    	font-size: 50px;
+		    	padding-top: 25px;
+		    }
+		    .temperatureDisplayActive
+		    {
+		    	font-family: 'digital-clock-font';
+		    	font-size: 80px;
+		    }
+	    </style>
+	</head>
+	<body>
+		<!-- ******************* TOP ******************* -->
+		<div class="frame">
+		   <div class="frame left">
+		   		<div class="title"> 
+		   			Maria
+		   		</div>
+		   		<div id="tempMaria" class="temperatureDisplayInactive">
+		   			loading...
+				</div>
+		   </div>
+		   <div class="frame right">
+		   		<div class="title">
+		   			Marco
+		   		</div>
+		   		<div id="tempMarco" class="temperatureDisplayInactive">
+		   			loading...
+		   		</div>
+		   </div>	    
+		</div>
+		
+		<!-- ******************* BOTTOM ******************* -->
+		<div class="frame">
+		   <div class="frame left">
+		   		
+		   </div>
+		   <div class="frame right">
+		   		<div class="title">
+		   			Esterna
+		   		</div>
+		   		<div id="tempEsterna" class="temperatureDisplayInactive">
+		   			loading...
+		   		</div>
+		   </div> 	    
+		</div>
+		
+	</body>
+</html>

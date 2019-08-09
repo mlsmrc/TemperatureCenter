@@ -1,0 +1,52 @@
+@font-face {
+    font-family: 'digital-clock-font';
+    src: url('font/digital-7.ttf');
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: black;
+}
+
+.frame
+{
+	font-family: 'digital-clock-font';
+	width: 100%;
+	height: 50%;
+	font-size: 200px;
+	text-align: center;
+	padding-top: 1%;
+	color: #f73030;
+}
+.left
+{
+	float: left;
+	height: 100%;
+	width: 50%;
+}
+.right
+{
+	float: right;
+	height: 100%;
+	width: 50%;
+}
+.title
+{
+	font-family: 'digital-clock-font';
+	font-size: 80px;
+	width: 100%;
+	height: 20%;
+	text-align: center;
+}
+.temperatureDisplayInactive
+{
+	font-family: 'digital-clock-font';
+	font-size: 100px;
+	padding-top: 115px;
+}
+.temperatureDisplayActive
+{
+	font-family: 'digital-clock-font';
+	font-size: 270px;
+}
