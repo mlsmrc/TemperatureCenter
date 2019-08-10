@@ -1,13 +1,16 @@
-use admin
 db.createUser(
     {
-        user: "devroot",
-        pwd: "devroot",
+        user: "test",
+        pwd: "test",
         roles:[
             {
-                role: "readWrite",
-                db:   "mydatabase"
+                role: "root",
+                db:   "admin"
             }
         ]
     }
 );
+
+db.getUsers( {
+   showCredentials: true
+} );
