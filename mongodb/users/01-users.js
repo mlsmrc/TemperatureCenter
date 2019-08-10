@@ -10,7 +10,3 @@ db.createUser(
         ]
     }
 );
-
-db.getUsers( {
-   showCredentials: true
-} );
