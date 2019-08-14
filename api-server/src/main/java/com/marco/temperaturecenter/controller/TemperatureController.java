@@ -1,38 +1,49 @@
 package com.marco.temperaturecenter.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.marco.temperaturecenter.db.value.TemperatureValue;
+import com.marco.temperaturecenter.db.TemperatureRepository;
+import com.marco.temperaturecenter.db.TemperatureValue;
 
 @RestController
 @RequestMapping("/temperature")
 public class TemperatureController {
 
-	private AtomicLong uid = new AtomicLong();
+	
+	@Autowired
+	private Logger logger;
+	
+	@Autowired
+	TemperatureRepository tempDb;
+	
+	
     @GetMapping("/")
-    public String info() {
-        return "Temperature";
+    public List<TemperatureValue> allDayTemperature() {
+    	logger.info("Requesting all temperature value");
+        return tempDb.findAll();
     }
     
-    @GetMapping("/{room}")
-    public List<Map<String,String>> room(@PathVariable String room) {
-    	List<Map<String,String>> lt = new ArrayList<Map<String,String>>();
-        lt.add(TemperatureValue.value(uid.incrementAndGet(), 30.0, room));
-        lt.add(TemperatureValue.value(uid.incrementAndGet(), 20.0, room));
-        
-        return lt;
+    @RequestMapping(value = "/{room}", method = RequestMethod.POST)
+    public void postTemperature(@PathVariable String room, @RequestBody String value)
+    {
+    	logger.info("Adding "+value+" temperature for room '"+room+"'");
+    	tempDb.insert(new TemperatureValue(Double.parseDouble(value), room));
     }
     
-    @GetMapping("/{room}/last")
-    public Map<String,String> roomLast(@PathVariable String room) {
-        return TemperatureValue.value(uid.incrementAndGet(), 30.0, room);
-    }
+    
+    @GetMapping("/error")
+    public String errorApi()
+    {
+    	return "404";
+    }  
+    
 }
