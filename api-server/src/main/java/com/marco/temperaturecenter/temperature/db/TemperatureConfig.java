@@ -1,6 +1,5 @@
-package com.marco.temperaturecenter.db;
+package com.marco.temperaturecenter.temperature.db;
 
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import org.springframework.context.annotation.Bean;
