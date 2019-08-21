@@ -51,6 +51,11 @@
 	    <scope>test</scope>
 	</dependency>
 	
+	<dependency> <!-- Docker for testing -->
+    	<groupId>org.testcontainers</groupId>
+    	<artifactId>testcontainers</artifactId>
+    	<version>1.11.4</version>
+	</dependency>
 	<!-- Utilities -->
 	<dependency>
   		<groupId>org.projectlombok</groupId>

@@ -4,9 +4,7 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 
 @Getter(AccessLevel.PUBLIC)
@@ -60,7 +58,7 @@ public class Data {
 		this._id=id;
 	}
 	
-	protected static Data getEmpty(String id,String location)
+	public static Data getEmpty(String id,String location)
 	{
 		return new Data(0, location, id);
 	}

@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  api-server:
+    build: .
+    image: temperaturecenter/api-server:latest
+    ports:
+        - "8080:8080"
+    container_name: api-server

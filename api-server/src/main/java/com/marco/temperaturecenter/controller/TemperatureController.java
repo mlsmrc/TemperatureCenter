@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.marco.temperaturecenter.db.data.location.Location;
 import com.marco.temperaturecenter.db.data.temperature.Data;
 import com.marco.temperaturecenter.db.data.temperature.TemperatureCurrentValue;
 import com.marco.temperaturecenter.db.data.temperature.TemperatureMonthlyValue;
+import com.marco.temperaturecenter.db.location.LocationRepo;
 import com.marco.temperaturecenter.db.data.temperature.TemperatureDailyValue;
 import com.marco.temperaturecenter.db.temperature.*;
 
@@ -28,11 +30,14 @@ public class TemperatureController {
 	@Autowired
 	private Logger logger;
 	
-	@Autowired // writing json on "today_temperature db"
+	@Autowired // writing data on "today_temperature db"
 	private TemperatureDailyRepo dailyDb;
 	
-	@Autowired // writing json on "last_temperature db"
+	@Autowired // writing data on "last_temperature db"
 	private TemperatureCurrentRepo lastTempDb;
+	
+	@Autowired // writing data on "location db"
+	private LocationRepo locationDb;
 	
 	
     @GetMapping("/{location}/avg")
@@ -104,12 +109,29 @@ public class TemperatureController {
     	logger.info("Adding "+value+" temperature for location '"+location+"'");
     	dailyDb.insert(new TemperatureDailyValue(Double.parseDouble(value), location));
     	postTodayTemperature(location, value);
+    	insertLocation(location);
     }
+    
+    /**********************************
+     * Auxiliary functions
+     */
+    
     
     private void postTodayTemperature(String location,String value)
     {
     	lastTempDb.deleteById(Data.TEMPERATURE_ID);
     	lastTempDb.insert(new TemperatureCurrentValue(Double.parseDouble(value), location));
+    }
+    
+    /*private void insertLocation(Data d)
+    {
+    	if(!locationDb.existsById(d.getLocation()))
+    		locationDb.insert(new Location(d.getLocation()));
+    }*/
+    private void insertLocation(String location)
+    {
+    	if(!locationDb.existsById(location))
+    		locationDb.insert(new Location(location));
     }
     
 }
