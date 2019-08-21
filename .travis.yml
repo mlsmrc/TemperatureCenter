@@ -2,5 +2,5 @@ dist: bionic
 
 script:
 - cd api-server
-- ./mvnw package
-- ls api-server/target/api-server
+- ./mvnw test
+- ls api-server/target/api-server*
