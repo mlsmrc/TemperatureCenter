@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Assertions;
 
 import java.util.logging.Logger;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.marco.temperaturecenter.common.MongoTest;
 import com.marco.temperaturecenter.controller.TemperatureController;
 import com.marco.temperaturecenter.db.data.location.Location;
 
@@ -32,15 +29,6 @@ public class LocationControllerTest {
 	
 	@Autowired
 	TemperatureController tc;
-	
-	@Autowired
-	MongoTest mongo;
-	
-	@Before
-	public void before()
-	{
-		mongo.start();
-	}
 	
 	
 	@Test
@@ -70,11 +58,5 @@ public class LocationControllerTest {
 		tc.postTemperature(TEST_ROOM2, "21.0");
 		Assertions.assertEquals(lc.getAllLocation().contains(new Location(TEST_ROOM2)),true);
 		Assertions.assertEquals(lc.getAllLocation().contains(new Location(TEST_ROOM)),true);
-	}
-	
-	@After
-	public void after()
-	{
-		mongo.stop();
 	}
 }
