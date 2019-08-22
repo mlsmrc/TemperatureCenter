@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static com.marco.temperaturecenter.common.Constants.*;
@@ -16,7 +17,12 @@ import com.marco.temperaturecenter.controller.TemperatureController;
 
 @SpringBootTest
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class) //for TemperatureController beans scope
+
+/* for TemperatureController beans scope */
+@RunWith(SpringJUnit4ClassRunner.class) //
+
+/* application properties import for testing purpose */
+@TestPropertySource(locations="classpath:application.test.properties") 
 public class TemperatureControllerTest {
 	
 	@Autowired
