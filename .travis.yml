@@ -2,4 +2,4 @@ dist: bionic
 
 script:
 - cd api-server
-- ./test.sh
+- ./build.sh --stopall
