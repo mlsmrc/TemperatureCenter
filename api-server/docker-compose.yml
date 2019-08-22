@@ -3,7 +3,7 @@ version: '2.0'
 services:
   api-server:
     build: .
-    image: temperaturecenter/api-server:latest
+    image: theoriginaltonystark/temperaturecenter_api-server:latest
     ports:
         - "8080:8080"
     container_name: api-server

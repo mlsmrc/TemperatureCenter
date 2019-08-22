@@ -51,6 +51,7 @@ args $1
 ## Starting mongo docker for test
 print "Starting mongo docker on port $MONGO_PORT"
 mongo_id=$(docker run -d -p $MONGO_PORT:$MONGO_PORT --name $MONGO_NAME -e MONGO_INITDB_ROOT_USERNAME=test -e MONGO_INITDB_ROOT_PASSWORD=test -e MONGO_INITDB_DATABASE=mydatabase mongo)
+docker inspect $mongo_id
 print "Mongo docker created. ID: $mongo_id"
 
 ## Maven Build
