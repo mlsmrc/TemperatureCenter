@@ -2,9 +2,4 @@ dist: bionic
 
 script:
 - cd api-server
-- ./build.sh --stopall
-
-post-script:
-- echo $DOCKER_PWD | docker login --username=theoriginaltonystark
-- docker-compose build
-- docker push theoriginaltonystark/temperaturecenter_api-server:latest
+- ./build.sh --force

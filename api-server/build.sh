@@ -31,12 +31,13 @@ function stopAll()
 function args()
 {
 	case $1 in
-		--stopall)
+		--force)
 			stopAll
 			;;
+			
 		--help)
-			echo "usage: /build.sh [--stopall]"
-			echo "--stopall: stop all services on port $MONGO_PORT and all services named $MONGO_NAME."
+			echo "usage: /build.sh [--force]"
+			echo "--force: stop all services on port $MONGO_PORT and all services named $MONGO_NAME."
 			echo "           use it for maven build"
 			exit 0
 			;;
@@ -56,18 +57,27 @@ print "Mongo docker created. ID: $mongo_id"
 
 ## Maven Build
 ./mvnw package
-MVN=$?
+[ $? -ne 0 ] && print "Error testing api-server" && exit 1
+print "api-server tested correctly"
 
 ## Stopping mongo docker for test
 print "Stopping mongo docker"
 mongo_id_stopped=$(docker stop $mongo_id)
-[ $? -eq 0 ] && print "Mongo docker stopped. ID: $mongo_id_stopped" || print "Error stopping mongo docker"
+[ $? -ne 0 ] && print "Error stopping mongo docker" && exit 1
+print "Mongo docker stopped. ID: $mongo_id_stopped"
 
 jarfile=$(ls target/api-server*.jar 2>/dev/null)
-F=$?
-[ $F -eq 0 ] && print "File found: $jarfile" || print "No file found on path target/"
+[ $? -ne 0 ] && print "No file found on path target/" && exit 1
+print "File found: $jarfile"
+
+## Docker Build
+docker-compose build
+[ $? -ne 0 ] && print "Error building docker image" && exit 1
+print "Docker image built correctly"
+
+## Upload on Docker Hub
+echo $DOCKER_PWD | docker login --username=theoriginaltonystark --password-stdin
+docker push theoriginaltonystark/temperaturecenter_api-server:latest
 
 ## Exit
-RC=$((MVN+F))
-print "Exiting $RC"
-exit $RC
+exit 0
