@@ -10,7 +10,7 @@ It will show them into a Rasperry PI display.
 
 ## Diagram
 
-![](/Users/marco/Downloads/architecture.png)
+![](img/architecture.png)
 
 The soluction has (for now) three main components:
 
@@ -20,6 +20,6 @@ The soluction has (for now) three main components:
 ## Next implementation
 
 - [ ] Backup system
+- [ ] Data visualization for each location
 - [ ] Homekit implementation
-- [ ] Data visualization for each location
 - [ ] Data feed for monthly data progression
