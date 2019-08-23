@@ -10,7 +10,7 @@
 		    function httpGet(theUrl)
 			{
 				var xmlHttp = new XMLHttpRequest();
-console.log(theUrl);
+				console.log(theUrl);
 				xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
 			    	xmlHttp.send( null );
 			    return xmlHttp.responseText;
@@ -34,9 +34,9 @@ console.log(theUrl);
 		        }
 		        document.getElementById(divid).innerHTML = temperature;
 			}
-		    setInterval(setTemperature,5000,"http://"+ip+":1880/temperature/cameretta","tempMarco");
-		    setInterval(setTemperature,5000,"http://"+ip+":1880/temperature/cameradaletto","tempMaria");
-		    setInterval(setTemperature,5000,"http://"+ip+":1880/temperature/esterna","tempEsterna");
+		    setInterval(setTemperature,5000,"http://"+ip+":8080/temperature/cameretta","tempMarco");
+		    setInterval(setTemperature,5000,"http://"+ip+":8080/temperature/cameradaletto","tempMaria");
+		    setInterval(setTemperature,5000,"http://"+ip+":8080/temperature/esterna","tempEsterna");
 	    </script>
 	    <style>
 		    @font-face {

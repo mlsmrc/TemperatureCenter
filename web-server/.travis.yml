@@ -1,2 +1,5 @@
+dist: bionic
+
 script:
-- docker build -t temperatureserver/web-server:0.1 .
+- cd web-server
+- ./build.sh --push $DOCKER_PWD
