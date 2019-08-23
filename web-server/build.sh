@@ -67,7 +67,7 @@ print "Docker image built correctly"
 if [ $DOCKER_PUSH -eq 1 ]; then
 	print "Pushing docker image"
 	echo $DOCKER_PWD | docker login --username=theoriginaltonystark --password-stdin
-	docker push theoriginaltonystark/temperaturecenter_api-server:latest
+	docker push theoriginaltonystark/temperaturecenter_web-server:latest
 	print "Docker image pushed"
 fi
 
