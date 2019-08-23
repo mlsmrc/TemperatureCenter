@@ -1,6 +1,7 @@
 package com.marco.temperaturecenter.db.data.temperature;
 
 
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AccessLevel;
@@ -16,7 +17,7 @@ public class TemperatureCurrentValue extends Data {
 	
 	public TemperatureCurrentValue(double temperature,String location)
 	{
-		super(temperature, location,TEMPERATURE_ID);
+		super(temperature, location,buildUniqueID(location, TEMPERATURE_ID));
 	}
 	
 	public TemperatureCurrentValue()
@@ -26,6 +27,6 @@ public class TemperatureCurrentValue extends Data {
 	
 	public static TemperatureCurrentValue getEmpty(String location)
 	{
-		return getEmpty(TEMPERATURE_ID);
+		return getEmpty(buildUniqueID(location, TEMPERATURE_ID));
 	}
 }

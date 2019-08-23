@@ -2,4 +2,4 @@ dist: bionic
 
 script:
 - cd api-server
-- ./build.sh --force
+- ./build.sh --force --push $DOCKER_PWD

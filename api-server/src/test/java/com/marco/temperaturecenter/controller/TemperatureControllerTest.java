@@ -2,6 +2,7 @@ package com.marco.temperaturecenter.controller;
 
 import org.junit.jupiter.api.Assertions;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static com.marco.temperaturecenter.common.Constants.*;
 import com.marco.temperaturecenter.controller.TemperatureController;
+import com.marco.temperaturecenter.db.data.temperature.Data;
 
 @SpringBootTest
 @ContextConfiguration
@@ -124,6 +126,18 @@ public class TemperatureControllerTest {
 	
 	@Test
 	/** Testing function
+	 *  - postTodayTemperature W/O multi location test
+	 */
+	public void postTodayTemperature2() {
+		testLogger.info("Testing postTodayTemperature");
+	    t.postTemperature(TEST_ROOM, "20.0");
+	    t.postTemperature(TEST_ROOM2, "21.0");
+	    Assertions.assertEquals(t.getLastTemperature(TEST_ROOM).getValue(),20,0);
+	    Assertions.assertEquals(t.getLastTemperature(TEST_ROOM2).getValue(),21,0);
+	}
+	
+	@Test
+	/** Testing function
 	 *  - getTemperatureAvg
 	 */
 	public void getTemperatureAvg() {
@@ -134,5 +148,36 @@ public class TemperatureControllerTest {
 	    t.postTemperature(TEST_ROOM, "24.0");
 	    Assertions.assertEquals(t.getAllForRoom(TEST_ROOM).size(),3);
 	    Assertions.assertEquals(t.getTemperatureAvg(TEST_ROOM).getValue(),22);
+	}
+	
+	@Test
+	/** Testing function
+	 *  - getLastTemperatureValue
+	 */
+	public void getLastTemperatureValue() {
+		testLogger.info("Testing getLastTemperatureValue");
+		t.deleteAllForRoom(TEST_ROOM);
+	    t.postTemperature(TEST_ROOM, "20.5");
+	    Assertions.assertEquals(t.getLastTemperatureValue(TEST_ROOM), "20.5");
+	    t.postTemperature(TEST_ROOM, "0.5");
+	    Assertions.assertEquals(t.getLastTemperatureValue(TEST_ROOM), "0.5");
+	    t.postTemperature(TEST_ROOM2, "21.5");
+	    Assertions.assertEquals(t.getLastTemperatureValue(TEST_ROOM2), "21.5");
+	    t.postTemperature(TEST_ROOM2, "1.5");
+	    Assertions.assertEquals(t.getLastTemperatureValue(TEST_ROOM2), "1.5");
+	    
+	    Assertions.assertEquals(t.getLastTemperatureValue(TEST_ROOM3), Data.NOT_FOUND_STRING);
+	}
+	
+	@Test
+	/** Testing function
+	 *  - getLastTemperatureValues
+	 */
+	public void getLastTemperatureValues() {
+		testLogger.info("Testing getLastTemperatureValues");
+		t.postTemperature(TEST_ROOM, "20.5");
+		Map<String,String> m = t.getLastTemperatureValues();
+		Assertions.assertEquals(m.containsKey(TEST_ROOM), true);
+		Assertions.assertEquals(m.get(TEST_ROOM), "20.5");
 	}
 }

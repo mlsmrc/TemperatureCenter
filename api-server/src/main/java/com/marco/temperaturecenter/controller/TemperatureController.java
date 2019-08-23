@@ -1,11 +1,14 @@
 package com.marco.temperaturecenter.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +24,10 @@ import com.marco.temperaturecenter.db.location.LocationRepo;
 import com.marco.temperaturecenter.db.data.temperature.TemperatureDailyValue;
 import com.marco.temperaturecenter.db.temperature.*;
 
+import static com.marco.temperaturecenter.db.data.temperature.Data.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/temperature")
 public class TemperatureController {
 
@@ -98,8 +103,17 @@ public class TemperatureController {
     @RequestMapping(value = "/{location}/last", method = RequestMethod.GET)
     public TemperatureCurrentValue getLastTemperature(@PathVariable String location)
     {
-    	Optional<TemperatureCurrentValue> t = lastTempDb.findById(Data.TEMPERATURE_ID);
+    	Optional<TemperatureCurrentValue> t = lastTempDb.findById(buildUniqueID(location, TEMPERATURE_ID));
     	return t.isPresent() ? t.get() : TemperatureCurrentValue.getEmpty(location);
+    	
+    }
+    
+
+    @RequestMapping(value = "/{location}/last/value", method = RequestMethod.GET)
+    public String getLastTemperatureValue(@PathVariable String location)
+    {
+    	Optional<TemperatureCurrentValue> t = lastTempDb.findById(buildUniqueID(location, TEMPERATURE_ID));
+    	return t.isPresent() ? String.valueOf(t.get().getValue()) : Data.NOT_FOUND_STRING;
     	
     }
     
@@ -112,6 +126,24 @@ public class TemperatureController {
     	insertLocation(location);
     }
     
+    
+    @RequestMapping(value = "/last/values", method = RequestMethod.GET)
+    public Map<String,String> getLastTemperatureValues()
+    {
+    	Map<String,String> values = new HashMap<String,String>();
+    	for(Location l : locationDb.findAll())
+    	{
+    		logger.info(l.get_id());
+    		String id = buildUniqueID(l.get_id(), TEMPERATURE_ID);
+    		logger.info(id);
+    		values.put(l.get_id(), 	lastTempDb.existsById(id) ? 
+    								String.valueOf(lastTempDb.findById(id).get().getValue()) :
+    								Data.NOT_FOUND_STRING);
+    	}
+    	return values;
+    	
+    }
+    
     /**********************************
      * Auxiliary functions
      */
@@ -119,7 +151,7 @@ public class TemperatureController {
     
     private void postTodayTemperature(String location,String value)
     {
-    	lastTempDb.deleteById(Data.TEMPERATURE_ID);
+    	lastTempDb.deleteById(buildUniqueID(location, TEMPERATURE_ID));
     	lastTempDb.insert(new TemperatureCurrentValue(Double.parseDouble(value), location));
     }
     

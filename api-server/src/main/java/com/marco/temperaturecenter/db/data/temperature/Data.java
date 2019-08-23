@@ -11,8 +11,10 @@ import lombok.*;
 @Setter(AccessLevel.PUBLIC)
 public class Data {
 	
-	public static final String TEMPERATURE_ID="1";
-	public static final String HUMIDITY_ID="2";
+	public static final String TEMPERATURE_ID="T";
+	public static final String HUMIDITY_ID="H";
+	public static final Double NOT_FOUND=Double.MAX_VALUE;
+	public static final String NOT_FOUND_STRING="NOT FOUND";
 	
 	private Date date;
 	private double value;
@@ -63,6 +65,8 @@ public class Data {
 		return new Data(0, location, id);
 	}
 	
+	
+	
 	@Override
 	public String toString()
 	{
@@ -72,5 +76,16 @@ public class Data {
 		sb.append("date:"+date.toString()+" - ");
 		sb.append("value:"+date.toString());
 		return sb.toString();
+	}
+	
+	/** Build id for last stored data (i.e. last temperature / last humidity)
+	 * 
+	 * @param location
+	 * @param id
+	 * @return
+	 */
+	public static String buildUniqueID(String location,String id)
+	{
+		return id+"_"+location;
 	}
 }
