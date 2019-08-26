@@ -3,3 +3,4 @@ dist: bionic
 script:
 - cd web-server
 - ./build.sh --push $DOCKER_PWD
+- ./build.sh --raspbian --push $DOCKER_PWD
