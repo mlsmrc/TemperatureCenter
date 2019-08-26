@@ -1,0 +1,3 @@
+FROM hypriot/rpi-busybox-httpd
+COPY content/* www/
+EXPOSE 80
