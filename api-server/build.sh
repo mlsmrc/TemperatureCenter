@@ -4,10 +4,13 @@
 # Variables
 ###########################################
 
+APPLICATION_VERSION="0.1.0"
+LATEST="latest"
+DOCKERFILE="Dockerfile"
+
 MONGO_PORT=27017
 MONGO_NAME="mongo_test"
 HOSTNAME="db"
-APPLICATION_VERSION="0.1.0"
 DOCKER_PUSH=0
 STOP_ALL=0
 
@@ -66,6 +69,14 @@ function args()
 				echo "-p|--push: push images to Docker HUB"
 				exit 0
 				;;
+			-r|--raspbian)
+				print "Build for Raspbian"
+				SUFFIX="-RPi"
+				LATEST=${LATEST}${SUFFIX}
+				APPLICATION_VERSION=${APPLICATION_VERSION}${SUFFIX}
+				DOCKERFILE="DockerfileRPi"
+				shift
+				;;
 		esac
 	done
 }
@@ -100,15 +111,22 @@ jarfile=$(ls target/api-server*.jar 2>/dev/null)
 print "File found: $jarfile"
 
 ## Docker Build
-docker build -t theoriginaltonystark/temperaturecenter_api-server:latest .
-docker build -t theoriginaltonystark/temperaturecenter_api-server:${APPLICATION_VERSION} .
+docker build --file ${DOCKERFILE} -t theoriginaltonystark/temperaturecenter_api-server:${LATEST} .
+docker build --file ${DOCKERFILE} -t theoriginaltonystark/temperaturecenter_api-server:${APPLICATION_VERSION} .
 [ $? -ne 0 ] && print "Error building docker image" && exit 1
 print "Docker image built correctly"
 
 ## Upload on Docker Hub
 if [ $DOCKER_PUSH -eq 1 ]; then
-	echo $DOCKER_PWD | docker login --username=theoriginaltonystark --password-stdin
-	docker push theoriginaltonystark/temperaturecenter_api-server:latest
+	print "Pushing docker image"
+	echo $DOCKER_PWD | docker login -u theoriginaltonystark --password-stdin
+	docker push theoriginaltonystark/temperaturecenter_api-server:${LATEST} 
+	DL=$?
+	docker push theoriginaltonystark/temperaturecenter_api-server:${APPLICATION_VERSION}
+	DAP=$?
+
+	[ $DL -ne 0 ] || [ $DAP -ne 0 ] && err "Docker image not pushed" && exit 1
+	print "Docker image pushed correctly"
 fi
 
 ## Exit
