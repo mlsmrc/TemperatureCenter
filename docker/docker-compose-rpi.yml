@@ -1,0 +1,70 @@
+version: '3.7'
+
+networks:
+    private:
+        name: private
+        driver: bridge
+    public:
+        name: public
+        driver: bridge
+        
+       
+services:
+    mongo:
+        # 2.4.10 works fine on ARM Architectures (RPi as well)
+        image: mongo:2.4.10
+        container_name: temperaturecenter_mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: "admin"
+            MONGO_INITDB_ROOT_PASSWORD: "admin"
+            MONGO_INITDB_DATABASE: "mydatabase"
+            IMPORT_FROM_VOLUME: "true"
+        ports:
+            - 27017
+        volumes:
+            - ./users/:/docker-entrypoint-initdb.d/
+        networks:
+            - private
+
+    mongo-express:
+        # amd64/mongo-express is specifical for AMD instead of classic mongo-express docker image
+        image: amd64/mongo-express:0.49
+        container_name: temperaturecenter_mongo-express
+        restart: always
+        depends_on:
+            - mongo
+        ports:
+            - 8081:8081
+        environment:
+            - ME_CONFIG_MONGODB_SERVER=mongo
+            - ME_CONFIG_MONGODB_PORT=27017 
+            - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
+            - ME_CONFIG_MONGODB_AUTH_DATABASE=mydatabase
+            - ME_CONFIG_MONGODB_AUTH_USERNAME=test
+            - ME_CONFIG_MONGODB_AUTH_PASSWORD=test
+        networks:
+            - private
+            - public
+            
+    api-server:
+        image: theoriginaltonystark/temperaturecenter_api-server:latest
+        ports:
+            - 8080:8080
+        container_name: temperaturecenter_api-server
+        depends_on:
+            - mongo
+        networks:
+            - private
+            - public
+    
+    web-server:
+        image: theoriginaltonystark/temperaturecenter_web-server:latest
+        ports:
+            - 80:80
+        container_name: temperaturecenter_web-server
+        depends_on:
+            - mongo
+            - api-server
+        networks:
+            - public
