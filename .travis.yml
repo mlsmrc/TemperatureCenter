@@ -1,5 +1,9 @@
 dist: bionic
 
+env:
+  - ARCH=x64
+  - ARCH=arm
+
 script:
 - cd db-server
 - ./build.sh --push $DOCKER_PWD
