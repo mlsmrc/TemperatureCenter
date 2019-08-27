@@ -10,7 +10,7 @@ RUN apt-get update && apt-get -y dist-upgrade && \
 VOLUME ["/docker-shares"]
 VOLUME ["/var/lib/mongodb"]
 
-RUN mkdir -r /data/db/
+RUN mkdir -p /data/db/
 
 # Define default command.
 CMD ["mongod"]
