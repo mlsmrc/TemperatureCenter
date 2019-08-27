@@ -1,0 +1,5 @@
+dist: bionic
+
+script:
+- cd db-server
+- ./build.sh --push $DOCKER_PWD
