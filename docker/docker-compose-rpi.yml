@@ -12,7 +12,7 @@ networks:
 services:
     mongo:
         # 2.4.10 works fine on ARM Architectures (RPi as well)
-        image: mongo:2.4.10
+        image: theoriginaltonystark/temperaturecenter_db-server:latest-RPi
         container_name: temperaturecenter_mongo
         restart: always
         environment:
@@ -48,7 +48,7 @@ services:
             - public
             
     api-server:
-        image: theoriginaltonystark/temperaturecenter_api-server:latest
+        image: theoriginaltonystark/temperaturecenter_api-server:latest-RPi
         ports:
             - 8080:8080
         container_name: temperaturecenter_api-server
@@ -59,7 +59,7 @@ services:
             - public
     
     web-server:
-        image: theoriginaltonystark/temperaturecenter_web-server:latest
+        image: theoriginaltonystark/temperaturecenter_web-server:latest-RPi
         ports:
             - 80:80
         container_name: temperaturecenter_web-server
