@@ -4,7 +4,7 @@
 # Variables
 ###########################################
 
-DOCKERFILE="docker-compose.yml"
+DOCKERFILE="docker/docker-compose.yml"
 CMD=
 STOP_ALL=0
 
@@ -54,7 +54,7 @@ function args()
 			-r|--raspbian)
 				print "Build for Raspbian"
 				SUFFIX="-RPi"
-				DOCKERFILE="docker-compose-rpi.yml"
+				DOCKERFILE="docker/docker-compose-rpi.yml"
 				shift
 				;;
 			-c|--command)

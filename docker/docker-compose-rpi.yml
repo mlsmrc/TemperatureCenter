@@ -23,7 +23,7 @@ services:
         ports:
             - 27017
         volumes:
-            - ./users/:/docker-entrypoint-initdb.d/
+            - ./users-rpi/:/docker-entrypoint-initdb.d/
         networks:
             - private
 
