@@ -14,3 +14,8 @@ Running webserver with command below:
 This is the web interface build to visualize the temperatures. It has been build specifically for Raspberry Pi screen.
 
 ![RPi_Interface](README/screen.png)
+
+## Note
+This is just a web interface with fixed names. I would to:
+
+- [ ] Create a sort of back-end to manage new stuff

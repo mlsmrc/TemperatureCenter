@@ -1,11 +1,9 @@
 <html>
 	<head>
-		<title>Progetto Montagna</title>
+		<title>Temperature Center</title>
 		<!--<link href="index.css" type="text/css" rel="stylesheet" />-->
 	    <script>
-		    var test=false;
-		    var ip="192.168.1.23";
-		    if(!test) ip="127.0.0.1";
+		    var ip="127.0.0.1";
 		    
 		    function httpGet(theUrl)
 			{
@@ -19,9 +17,7 @@
 			{
 				var temperature = "error"
 				try{
-		        	var response = httpGet(url);
-		        	response = JSON.parse(response);
-		        	temperature=response.temperature;
+		        	var temperature = httpGet(url);
 		        	console.log(temperature)
 		        	if(temperature===undefined)
 		        		temperature="-"
@@ -30,13 +26,14 @@
 		        	document.getElementById(divid).className = "temperatureDisplayActive";
 		        }
 		        catch (err) {
-		        	console.log("ciao");
+		        	console.log("Error");
+		        	console.log(err);
 		        }
 		        document.getElementById(divid).innerHTML = temperature;
 			}
-		    setInterval(setTemperature,5000,"http://"+ip+":8080/temperature/cameretta","tempMarco");
-		    setInterval(setTemperature,5000,"http://"+ip+":8080/temperature/cameradaletto","tempMaria");
-		    setInterval(setTemperature,5000,"http://"+ip+":8080/temperature/esterna","tempEsterna");
+		    setInterval(setTemperature,5000,"http://"+ip+":8080/api/temperature/cameretta/last/value","tempMarco");
+		    setInterval(setTemperature,5000,"http://"+ip+":8080/api/temperature/cameradaletto/last/value","tempMaria");
+		    setInterval(setTemperature,5000,"http://"+ip+":8080/api/temperature/esterna/last/value","tempEsterna");
 	    </script>
 	    <style>
 		    @font-face {
