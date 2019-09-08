@@ -1,24 +1,6 @@
-FROM balenalib/rpi-raspbian
-# Originally made by: https://github.com/matteoredaelli/docker-mongodb-rpi
+FROM theoriginaltonystark/mongo-rpi:latest
+COPY users/* /docker-entrypoint-initdb.d/
 
-# Install required packages
-RUN apt-get update && apt-get -y dist-upgrade && \
-    apt-get install -y --no-install-suggests mongodb # && \
-    # rm -rf /var/lib/apt/lists/*
-
-# Volumes
-VOLUME ["/docker-shares"]
-VOLUME ["/var/lib/mongodb"]
-
-RUN mkdir -p /data/db/
-
-# Define default command.
-CMD ["mongod"]
-
-# Expose ports.
-#   - 27017: process
-#   - 28017: http
-EXPOSE 27017
-EXPOSE 28017
-
-ENTRYPOINT /usr/bin/mongod
+ENV MONGO_INITDB_DATABASE=admin
+ENV MONGO_INITDB_ROOT_PASSWORD=test
+ENV MONGO_INITDB_ROOT_USERNAME=test

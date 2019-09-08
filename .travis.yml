@@ -1,9 +1,16 @@
-dist: bionic
+dist: 
+  bionic
 
-env:
-  - ARCH=x64
-  - ARCH=arm
-
+# https://blog.hypriot.com/post/setup-simple-ci-pipeline-for-arm-images/
+sudo: 
+    required
+services:
+    - docker
+language: 
+    bash
 script:
-- cd db-server
-- ./build.sh --push $DOCKER_PWD
+    # prepare qemu
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    # build image
+    - cd db-server
+    - ./build.sh --push $DOCKER_PWD
