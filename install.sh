@@ -1,8 +1,12 @@
 #!/bin/bash
 
+##########################
+# TC Constants
+##########################
 
 TC_FOLDER="/temperaturecenter"
 TC_FOLDER_BIN=${TC_FOLDER}"/bin"
+TC_LOG=${TC_FOLDER}"/log/docker-compose.log"
 
 ##########################
 # Constants
