@@ -1,6 +1,11 @@
 dist: bionic
-
+addons:
+  sonarcloud:
+    organization: "theoriginaltonystark-github"
+    token: $SONAR_TOKEN
+    
 script:
 - cd api-server
 - ./build.sh --force --push $DOCKER_PWD
 - ./build.sh --force --raspbian --push $DOCKER_PWD
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=mlsmrc_TemperatureCenter
